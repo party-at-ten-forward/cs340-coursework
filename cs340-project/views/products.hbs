@@ -1,0 +1,42 @@
+{{!
+****
+
+Citations:
+    
+Leveraged starter code from Web Application Technology Canvas exploration
+Link: https://canvas.oregonstate.edu/courses/1999601/pages/exploration-web-application-technology-2?module_item_id=25352948
+
+Leveraged ChatGPT to assist with displaying boolean values (1s and 0s) as Yes/No via a conditional
+Prompt example: These two columns are binary, with 1 indicating "Yes" and 0 indicating "No". Is there a way to display the data outputted for this column in each row as "Yes" or "No" depending on whether the value is 1 or 0?
+
+****
+}}
+
+<h1>Product Catalog</h1>
+
+{{! READ table }}
+<table>
+    <thead>
+        {{! For the table header row, we print the DB attribute names }}
+        <tr>
+            {{#each products.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    <tbody>
+        {{! For each row, print the id, fname, lname, homeworld and age }}
+        {{#each products}}
+        <tr>
+            <td>{{this.ProductID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Description}}</td>
+            <td>{{#if this.Organic}}Yes{{else}}No{{/if}}</td>
+            <td>{{this.Supplier}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

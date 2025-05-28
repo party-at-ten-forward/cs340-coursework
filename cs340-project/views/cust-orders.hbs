@@ -1,0 +1,143 @@
+{{!
+****
+
+Leveraged starter code from following Canvas explorations: 
+    "Web Application Technology Canvas",
+    "Implementing CUD operations in your app"
+Links: 
+    https://canvas.oregonstate.edu/courses/1999601/pages/exploration-web-application-technology-2?module_item_id=25352948
+    https://canvas.oregonstate.edu/courses/1999601/pages/exploration-implementing-cud-operations-in-your-app?module_item_id=25352968
+
+****
+}}
+
+<h1>Customer Orders</h1>
+
+{{! READ table }}
+<table>
+    <thead>
+        {{! For the table header row, we print the DB attribute names }}
+        <tr>
+            {{#each cust_orders.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{! For each row, print the id, fname, lname, homeworld and age }}
+        {{#each cust_orders}}
+        <tr>
+            <td>{{this.OrderNo}}</td>
+            <td>{{this.Company}}</td>
+            <td>{{this.Product}}</td>
+            <td>{{this.Price}}</td>
+            <td>{{this.QTY}}</td>
+            <td>{{#if this.Delivery}}Yes{{else}}No{{/if}}</td>
+            <td>{{#if this.Recurring}}Yes{{else}}No{{/if}}</td>
+
+            {{! DELETE form }}
+            <form id='delete_order_form' method='POST' action='/cust-orders/delete'>
+                <input type='hidden' name='delete_order_id' value='{{this.OrderNo}}' />
+                <input type='hidden' name='delete_cust_order' value='{{this.Company}} {{this.Product}} {{this.QTY}}' />
+                <td>
+                    <button type='submit'>
+                        Delete
+                    </button>
+                </td>
+            </form>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{! CREATE form }}
+<h2>Create a new order</h2>
+<form class='cuForm' id='create_order_form' method='POST' action='/cust-orders/create'>
+    <label for='create_order_cust'>Company: </label>
+    <select name='create_order_cust' id='create_order_cust' required>
+        <option value='' disabled selected hidden>Select a customer</option>
+        {{#each customers}}
+        <option value='{{this.customer_id}}' required>{{this.company_name}}</option>
+        {{/each}}
+    </select>
+
+    <label for='create_order_prod'>Product: </label>
+    <select name='create_order_prod' id='create_order_prod' required>
+        <option value='' disabled selected hidden>Select a product</option>
+        {{#each products}}
+        <option value='{{this.product_id}}' required>{{this.name}}</option>
+        {{/each}}
+    </select>
+
+    <label for='create_order_price'>Price: </label>
+    <input type='number' name='create_order_price' id='create_order_price' min='0' step="0.01" required />
+
+    <label for='create_order_qty'>Quantity: </label>
+    <input type='number' name='create_order_qty' id='create_order_qty' min='1' value='1'/>
+
+    <label for='create_order_deliv'>Delivery Requested?: </label>
+    <select name='create_order_deliv' id='create_order_deliv'>
+        <option value='0' selected>No</option>
+        <option value='1'>Yes</option>
+    </select>
+
+    <label for='create_order_recur'>Set Order to Recurring?: </label>
+    <select name='create_order_recur' id='create_order_recur'>
+        <option value='0' selected>No</option>
+        <option value='1'>Yes</option>
+    </select>
+
+    <input type='submit' />
+</form>
+
+{{! UPDATE form }}
+<h2>Update an existing order</h2>
+<form class='cuForm' id='update_order_form' method='POST' action='/cust-orders/update'>
+    <label for='update_order_id'>Order to update: </label>
+    <select name='update_order_id' id='update_order_id' required>
+        <option value='' disabled selected hidden>Select an order</option>
+        {{#each cust_orders}}
+        <option value='{{this.OrderNo}}' required>Order #{{this.OrderNo}}</option>
+        {{/each}}
+    </select>
+
+    <label for='update_order_cust'>Company: </label>
+    <select name='update_order_cust' id='update_order_cust' required>
+        <option value='' disabled selected hidden>Select a customer</option>
+        {{#each customers}}
+        <option value='{{this.customer_id}}' required>{{this.company_name}}</option>
+        {{/each}}
+    </select>
+
+    <label for='update_order_prod'>Product: </label>
+    <select name='update_order_prod' id='update_order_prod' required>
+        <option value='' disabled selected hidden>Select a product</option>
+        {{#each products}}
+        <option value='{{this.product_id}}' required>{{this.name}}</option>
+        {{/each}}
+    </select>
+
+    <label for='update_order_price'>Price: </label>
+    <input type='number' name='update_order_price' id='update_order_price' min='0' step="0.01" required />
+
+    <label for='update_order_qty'>Quantity: </label>
+    <input type='number' name='update_order_qty' id='update_order_qty' min='1' value='1'/>
+
+    <label for='update_order_deliv'>Delivery Requested?: </label>
+    <select name='update_order_deliv' id='update_order_deliv'>
+        <option value='0' selected>No</option>
+        <option value='1'>Yes</option>
+    </select>
+
+    <label for='update_order_recur'>Set Order to Recurring?: </label>
+    <select name='update_order_recur' id='update_order_recur'>
+        <option value='0' selected>No</option>
+        <option value='1'>Yes</option>
+    </select>
+
+    <input type='submit' />
+</form>
